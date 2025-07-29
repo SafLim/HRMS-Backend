@@ -2,16 +2,27 @@ import express from "express";
 import morgan from "morgan";
 import mongoose from "mongoose"; // Importing mongoose
 
+import cors from "cors";
+
 import dotenv from "dotenv"; // importing dotenv
-import { createEmployee, getAllEmployees, getEmployeeById } from "./controllers/employee.controller.js";
+import { createEmployee, deleteEmployee, getAllEmployees, getEmployeeById, updateEmployee } from "./controllers/employee.controller.js";
+import { loginEmployee } from "./controllers/auth.controller.js";
+import { authorizeToken } from "./middleware/auth.middleware.js";
 dotenv.config(); // Configuring .env file
 
 const app = express();
 const PORT = process.env.PORT;
 
-// For logging
+
+
+
+
+
+
+// For logging//Middlewares
 app.use(morgan("dev"));
 app.use(express.json())
+app.use(cors());
 
 
 // Creating Route
@@ -23,18 +34,20 @@ app.get("/", (req, res) => {
 
 
 //employee ko routes
-app.post("/employee/create", createEmployee);
+app.post("/employee", authorizeToken, createEmployee);
 //two parameters: one is path second is when that path is taken which fucntion should run....route and handler
 
-app.get("/employee/getAllEmployees", getAllEmployees);
+app.get("/employee",authorizeToken, getAllEmployees);
 //same ting as above but js for extracting all the employees from the db
 
-app.get("/employee/getAllEmployees/:id", getEmployeeById);
+app.get("/employee/:id", getEmployeeById);
 //colon id cuz id is dynamic as in it keeps on changing re
 
+app.put("/employee/:id", updateEmployee);
 
+app.delete("/employee/:id",authorizeToken, deleteEmployee);
 
-
+app.post("/auth", loginEmployee);
 
 // Database Connection
 mongoose
