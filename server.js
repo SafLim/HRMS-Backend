@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 
 
 //employee ko routes
-app.post("/employee", authorizeToken, createEmployee);
+app.post("/employee",  createEmployee);
 //two parameters: one is path second is when that path is taken which fucntion should run....route and handler
 
 app.get("/employee",authorizeToken, getAllEmployees);
