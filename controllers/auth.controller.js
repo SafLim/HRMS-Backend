@@ -37,8 +37,10 @@ export const loginEmployee = async (req, res) => {
       token,
       user: {
         _id: user.id,
+        name: user.name,
         email: user.email,
-        role: user.userType,
+        role: user.role,
+        user: user.userType,
       },
     });
   } catch (error) {

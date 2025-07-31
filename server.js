@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 
 
 //employee ko routes
-app.post("/employee",  createEmployee);
+app.post("/employee", authorizeToken, createEmployee);
 //two parameters: one is path second is when that path is taken which fucntion should run....route and handler
 
 app.get("/employee",authorizeToken, getAllEmployees);
@@ -48,6 +48,12 @@ app.put("/employee/:id", updateEmployee);
 app.delete("/employee/:id",authorizeToken, deleteEmployee);
 
 app.post("/auth", loginEmployee);
+
+
+//Route to verify token
+app.get("/",authorizeToken,()=>{
+  res.status(200).json({message:"Token Verified."});
+})
 
 // Database Connection
 mongoose
